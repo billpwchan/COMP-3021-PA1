@@ -4,6 +4,7 @@ import Exceptions.InvalidMapException;
 import Exceptions.InvalidNumberOfPlayersException;
 import Exceptions.UnknownElementException;
 import Map.Occupant.Crate;
+import Map.Occupant.Occupant;
 import Map.Occupant.Player;
 import Map.Occupiable.DestTile;
 import Map.Occupiable.Occupiable;
@@ -33,7 +34,58 @@ public class Map {
      */
     public void initialize(int rows, int cols, char[][] rep) throws InvalidMapException {
         //TODO
+        this.reInitializeVariables(rows, cols);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; ++j) {
+                switch (rep[i][j]) {
+                    case '#': {
+                        this.cells[i][j] = new Wall();
+                        break;
+                    }
+                    case '@': {
+                        if (this.player == null) {
+                            this.player = new Player(i, j);
+                            Cell newTile = new Tile();
+                            ((Tile) newTile).setOccupant(this.player);
+                            this.cells[i][j] = newTile;
+                            break;
+                        } else {
+                            throw new InvalidNumberOfPlayersException(">1 players found!");
+                        }
+                    }
+                    case '.': {
+                        this.cells[i][j] = new Tile();
+                        break;
+                    }
+                    default: {
+                        Cell newTile;
+                        if (Character.isLowerCase(rep[i][j])) { //Case of Crate on a cell.
+                            newTile = new Tile();
+                            Occupant newOccupant = new Crate(i, j, rep[i][j]);
+                            this.crates.add((Crate) newOccupant);
+                            ((Tile) newTile).setOccupant(newOccupant);
+                            this.cells[i][j] = newTile;
+                            break;
+                        } else if (Character.isUpperCase(rep[i][j])) {
+                            this.cells[i][j] = new DestTile(rep[i][j]);
+                            this.destTiles.add((DestTile) this.cells[i][j]);
+                            break;
+                        }
+                        throw new UnknownElementException("Unknown char: " + rep[i][j]);
+                    }
+                }
+            }
+        }
+        if (this.player == null) {
+            throw new InvalidNumberOfPlayersException("0 players found!");
+        }
+    }
 
+    private void reInitializeVariables(int rows, int cols) {
+        this.cells = new Cell[rows][cols];
+        this.destTiles = new ArrayList();
+        this.crates = new ArrayList();
+        this.player = null;
     }
 
     public ArrayList<DestTile> getDestTiles() {
@@ -85,8 +137,14 @@ public class Map {
      * yet does not currently have a crate in it. Will return false if out of bounds.
      */
     public boolean isOccupiableAndNotOccupiedWithCrate(int r, int c) {
-        //TODO
-        return false; // You may also modify this line.
+        if (this.isValid(r, c)) {
+            return false;
+        }
+        if (!(this.cells[r][c] instanceof Occupiable)) {
+            return true;
+        }
+        return !(((Occupiable) this.cells[r][c]).getOccupant().isPresent()
+                && ((Occupiable) this.cells[r][c]).getOccupant().get() instanceof Crate);
     }
 
     public enum Direction {
