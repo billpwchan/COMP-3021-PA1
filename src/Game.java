@@ -4,6 +4,7 @@ import Exceptions.UnknownElementException;
 import Map.*;
 import Map.Occupant.Crate;
 import Map.Occupiable.DestTile;
+import Map.Occupiable.Occupiable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,7 +50,6 @@ public class Game {
             //map dimension is inconsistent to specified numRows/Cols
             for (var i = 0; i < this.numRows; i++) {
                 String rowString = mapScanner.nextLine();
-//                System.out.println(rowString);
                 for (var j = 0; j < this.numCols; j++) {
                     this.rep[i][j] = rowString.charAt(j);
                 }
@@ -72,8 +72,8 @@ public class Game {
      * @return Whether or not the win condition has been satisfied
      */
     public boolean isWin() {
-        //TODO
-        return false; // You may also modify this line.
+        return this.m.getDestTiles().stream().allMatch(DestTile::isCompleted);
+//        return this.a.a().stream().allMatch(d.a::b);
     }
 
     /**
@@ -82,16 +82,27 @@ public class Game {
      * @return Whether deadlock has occurred
      */
     public boolean isDeadlocked() {
-        //TODO
-        return false; // You may also modify this line.
+//        for (Crate crate : this.m.getCrates()) {
+//            this.m.getDestTiles()
+//            boolean bl;
+//            boolean bl2 = this.a.a(a2.c(), a2.d() - 1) && this.a.a(a2.c(), a2.d() + 1);
+//            boolean bl3 = bl = this.a.a(a2.c() - 1, a2.d()) && this.a.a(a2.c() + 1, a2.d());
+//            if (!bl2 && !bl) continue;
+//            return false;
+//        }
+        return true;
     }
 
     /**
      * Print the map to console
      */
     public void display() {
-        //TODO
-
+        for (Cell[] rows : this.m.getCells()) {
+            for (Cell row : rows) {
+                System.out.print(row.getRepresentation());
+            }
+            System.out.println();
+        }
     }
 
     /**
@@ -104,7 +115,28 @@ public class Game {
      * @return Whether or not the move was successful
      */
     public boolean makeMove(char c) {
-        //TODO
+        switch (c) {
+            case 'w': {
+                return this.m.movePlayer(Map.Direction.UP);
+            }
+            case 'a': {
+                return this.m.movePlayer(Map.Direction.LEFT);
+            }
+            case 's': {
+                return this.m.movePlayer(Map.Direction.DOWN);
+            }
+            case 'd': {
+                return this.m.movePlayer(Map.Direction.RIGHT);
+            }
+            case 'r': {
+                try {
+                    this.m.initialize(this.numRows, this.numCols, this.rep);
+                } catch (InvalidMapException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            }
+        }
         return false; // You may also modify this line.
     }
 

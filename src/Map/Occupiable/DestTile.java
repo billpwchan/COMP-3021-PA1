@@ -2,9 +2,6 @@ package Map.Occupiable;
 
 import Map.Occupant.Crate;
 
-import java.nio.file.DirectoryStream;
-import java.util.function.Function;
-
 /**
  * A destination tile. To win the game, we must push the crate with the corresponding ID onto this tile
  */
@@ -24,7 +21,11 @@ public class DestTile extends Tile {
      */
     public boolean isCompleted() {
         //TODO
-        return false; // You may also modify this line.
+        if (this.getOccupant().isPresent() && this.getOccupant().get() instanceof Crate) {
+            Crate occupiedCrate = (Crate) this.getOccupant().get();     //Need to confirm whether cast will cause exception.
+            return Character.toUpperCase(occupiedCrate.getID()) == this.destID;
+        }
+        return false; // General case
     }
 
     /**
@@ -37,6 +38,9 @@ public class DestTile extends Tile {
     @Override
     public char getRepresentation() {
         //TODO
-        return ' '; // You may also modify this line.
+        if (this.getOccupant().isPresent()) {
+            return this.getOccupant().get().getRepresentation();
+        }
+        return this.destID; // By default return destTile's symbol
     }
 }

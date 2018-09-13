@@ -109,7 +109,38 @@ public class Map {
      * @return Whether the move was successful
      */
     public boolean movePlayer(Direction d) {
-        //TODO
+        int oriRow = this.player.getR();
+        int oriCol = this.player.getC();
+        int currentRow = this.player.getR();
+        int currentCol = this.player.getC();
+        switch (d) {
+            case UP: {
+                currentRow--;
+                break;
+            }
+            case DOWN: {
+                currentRow++;
+                break;
+            }
+            case LEFT: {
+                currentCol--;
+                break;
+            }
+            case RIGHT: {
+                currentCol++;
+                break;
+            }
+        }
+        if (this.isValid(currentRow, currentCol) && this.isOccupiableAndNotOccupiedWithCrate(currentRow, currentCol)) {
+            ((Tile) this.cells[oriRow][oriCol]).removeOccupant();
+            ((Tile) this.cells[currentRow][currentCol]).setOccupant(this.player);
+            this.player.setPos(currentRow, currentCol);
+            return true;
+        } else if (this.isValid(currentRow, currentCol) && this.cells[currentRow][currentCol] instanceof Occupiable) {
+            if (((Tile) this.cells[currentRow][currentCol]).getOccupant().get() instanceof Crate) {
+
+            }
+        }
         return false; // You may also modify this line.
     }
 
@@ -122,7 +153,28 @@ public class Map {
      * @return Whether or not the move was successful
      */
     private boolean moveCrate(Crate c, Direction d) {
-        //TODO
+        int oriRow = c.getR();
+        int oriCol = c.getC();
+        int currentRow = c.getR();
+        int currentCol = c.getC();
+        switch (d) {
+            case UP: {
+                currentRow--;
+                break;
+            }
+            case DOWN: {
+                currentRow++;
+                break;
+            }
+            case LEFT: {
+                currentCol--;
+                break;
+            }
+            case RIGHT: {
+                currentCol++;
+                break;
+            }
+        }
         return false; // You may also modify this line.
     }
 
@@ -137,13 +189,10 @@ public class Map {
      * yet does not currently have a crate in it. Will return false if out of bounds.
      */
     public boolean isOccupiableAndNotOccupiedWithCrate(int r, int c) {
-        if (this.isValid(r, c)) {
+        if (!this.isValid(r, c)) {
             return false;
         }
-        if (!(this.cells[r][c] instanceof Occupiable)) {
-            return true;
-        }
-        return !(((Occupiable) this.cells[r][c]).getOccupant().isPresent()
+        return (this.cells[r][c] instanceof Occupiable) && !(((Occupiable) this.cells[r][c]).getOccupant().isPresent()
                 && ((Occupiable) this.cells[r][c]).getOccupant().get() instanceof Crate);
     }
 

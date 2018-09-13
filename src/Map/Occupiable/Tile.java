@@ -24,8 +24,7 @@ public class Tile extends Cell implements Occupiable {
 
     @Override
     public Optional<Occupant> getOccupant() {
-        //TODO
-        return Optional.ofNullable(this.occupant).isPresent() ? Optional.empty() : Optional.ofNullable(this.occupant);
+        return Optional.ofNullable(this.occupant).isPresent() ? Optional.ofNullable(this.occupant) : Optional.empty();
     }
 
     /**
