@@ -1,20 +1,12 @@
-
 import Exceptions.InvalidMapException;
-import Exceptions.UnknownElementException;
-import Map.*;
+import Map.Cell;
+import Map.Map;
 import Map.Occupant.Crate;
 import Map.Occupiable.DestTile;
-import Map.Occupiable.Occupiable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 /**
  * Holds the necessary components for running the game.

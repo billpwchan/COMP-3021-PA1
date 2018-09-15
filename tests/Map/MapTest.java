@@ -2,14 +2,8 @@ package Map;
 
 import Exceptions.InvalidMapException;
 import Exceptions.InvalidNumberOfPlayersException;
-import Exceptions.UnknownElementException;
-import Map.Occupant.Crate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -60,7 +54,11 @@ class MapTest {
     void nullPlayerFound() throws InvalidMapException {
         m = new Map();
         assertThrows(InvalidNumberOfPlayersException.class, () -> m.initialize(rows, cols, badMap));
+    }
 
+    @Test
+    void invalidCoordinate() {
+        assertFalse(m.isOccupiableAndNotOccupiedWithCrate(10, 10));
     }
 
     @Test

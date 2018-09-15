@@ -1,14 +1,11 @@
 import Exceptions.InvalidMapException;
-import Map.Occupant.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 
@@ -22,6 +19,7 @@ class GameTest {
 
     @Test
     void loadMapFailure() throws InvalidMapException {
+        g.loadMap("");
         g.loadMap("asdlfkjasdlkfj"); //should not throw exception
         assertThrows(InvalidMapException.class, () -> g.loadMap("tests/badmap.txt"));
     }
@@ -64,6 +62,7 @@ class GameTest {
                 "#.@......#\n" +
                 "#b.......#\n" +
                 "##########".equals(outContent.toString()));
+        assertFalse(g.isDeadlocked());
         System.setOut(originalOut);
     }
 
@@ -83,5 +82,16 @@ class GameTest {
 //        g.loadMap("tests/badmap.txt");
 //        assertThrows(InvalidMapException.class, () -> g.loadMap("tests/badmap.txt"));
 //        g.makeMove('r');
+    }
+
+    @Test
+    void invalidMove() throws InvalidMapException {
+        assertFalse(g.makeMove('t'));
+    }
+
+    @Test
+    void isDeadLocked() throws InvalidMapException {
+        g.loadMap("tests/deadlockMap.txt");
+        assertTrue(g.isDeadlocked());
     }
 }
