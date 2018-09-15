@@ -20,9 +20,16 @@ class MapTest {
     private int cols = 6;
     private char[][] goodMap = {
             {'#', '#', '#', '#', '#', '#'},
-            {'#', '.', '.', '.', '.', '#'},
+            {'#', 'c', '.', '.', '.', '#'},
             {'.', '@', '.', 'a', 'b', '#'},
-            {'#', '.', '.', 'A', 'B', '#'},
+            {'#', '.', 'C', 'A', 'B', '#'},
+            {'#', '#', '#', '#', '#', '#'},
+    };
+    private char[][] badMap = {
+            {'#', '#', '#', '#', '#', '#'},
+            {'#', 'c', '.', '.', '.', '#'},
+            {'.', '.', '.', 'a', 'b', '#'},
+            {'#', '.', 'C', 'A', 'B', '#'},
             {'#', '#', '#', '#', '#', '#'},
     };
 
@@ -33,7 +40,44 @@ class MapTest {
     }
 
     @Test
+    void moveCrateTest() {
+        m.movePlayer(Map.Direction.UP);
+        m.movePlayer(Map.Direction.RIGHT);
+        m.movePlayer(Map.Direction.RIGHT);
+        m.movePlayer(Map.Direction.UP);
+        m.movePlayer(Map.Direction.RIGHT);
+        m.movePlayer(Map.Direction.RIGHT);
+        m.movePlayer(Map.Direction.DOWN);
+        m.movePlayer(Map.Direction.LEFT);
+        int count = 0;
+        for (var destTile : m.getDestTiles()) {
+            if (destTile.getOccupant().isPresent()) count++;
+        }
+        assertEquals(1, count);
+    }
+
+    @Test
+    void nullPlayerFound() throws InvalidMapException {
+        m = new Map();
+        assertThrows(InvalidNumberOfPlayersException.class, () -> m.initialize(rows, cols, badMap));
+
+    }
+
+    @Test
     void getDestTiles() {
         assertEquals(2, m.getDestTiles().stream().filter(x -> "AB".contains("" + x.getRepresentation())).count());
     }
+
+    @Test
+    void getCrates() {
+        assertEquals(2, m.getCrates().stream().filter(x -> "ab".contains("" + x.getRepresentation())).count());
+    }
+
+    @Test
+    void getCells() {
+        assertEquals(5, m.getCells().length);
+        assertEquals(6, m.getCells()[0].length);
+    }
+
+
 }

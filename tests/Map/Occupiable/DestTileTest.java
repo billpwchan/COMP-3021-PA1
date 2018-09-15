@@ -1,6 +1,7 @@
 package Map.Occupiable;
 
 import Map.Occupant.Crate;
+import Map.Occupant.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +23,22 @@ class DestTileTest {
     void isCompletedSuccess() {
         d.setOccupant(correctCrate);
         assertTrue(d.isCompleted());
+    }
+
+    @Test
+    void isCompletedFailed() {
+        d.setOccupant(wrongCrate);
+        assertFalse(d.isCompleted());
+
+        Player player = new Player(0, 0);
+        d.setOccupant(player);
+        assertFalse(d.isCompleted());
+    }
+
+    @Test
+    void getRepresentationTest() {
+        d.setOccupant(correctCrate);
+        assertEquals('a', d.getRepresentation());
     }
 
 }

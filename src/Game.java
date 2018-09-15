@@ -73,7 +73,6 @@ public class Game {
      */
     public boolean isWin() {
         return this.m.getDestTiles().stream().allMatch(DestTile::isCompleted);
-//        return this.a.a().stream().allMatch(d.a::b);
     }
 
     /**
@@ -82,14 +81,12 @@ public class Game {
      * @return Whether deadlock has occurred
      */
     public boolean isDeadlocked() {
-//        for (Crate crate : this.m.getCrates()) {
-//            this.m.getDestTiles()
-//            boolean bl;
-//            boolean bl2 = this.a.a(a2.c(), a2.d() - 1) && this.a.a(a2.c(), a2.d() + 1);
-//            boolean bl3 = bl = this.a.a(a2.c() - 1, a2.d()) && this.a.a(a2.c() + 1, a2.d());
-//            if (!bl2 && !bl) continue;
-//            return false;
-//        }
+        for (Crate crate : this.m.getCrates()) {
+            boolean flag1 = this.m.isOccupiableAndNotOccupiedWithCrate(crate.getR(), crate.getC() - 1) && this.m.isOccupiableAndNotOccupiedWithCrate(crate.getR(), crate.getC() + 1);
+            boolean flag2 = this.m.isOccupiableAndNotOccupiedWithCrate(crate.getR() - 1, crate.getC()) && this.m.isOccupiableAndNotOccupiedWithCrate(crate.getR() + 1, crate.getC());
+            if (!(flag1 || flag2)) continue;
+            return false;
+        }
         return true;
     }
 
@@ -114,7 +111,7 @@ public class Game {
      *          r: reload map (resets any progress made so far)
      * @return Whether or not the move was successful
      */
-    public boolean makeMove(char c) {
+    public boolean makeMove(char c) throws InvalidMapException {
         switch (c) {
             case 'w': {
                 return this.m.movePlayer(Map.Direction.UP);
@@ -129,11 +126,7 @@ public class Game {
                 return this.m.movePlayer(Map.Direction.RIGHT);
             }
             case 'r': {
-                try {
-                    this.m.initialize(this.numRows, this.numCols, this.rep);
-                } catch (InvalidMapException e) {
-                    e.printStackTrace();
-                }
+                this.m.initialize(this.numRows, this.numCols, this.rep);
                 return true;
             }
         }

@@ -20,10 +20,9 @@ public class DestTile extends Tile {
      * is currently occupying this tile.
      */
     public boolean isCompleted() {
-        //TODO
         if (this.getOccupant().isPresent() && this.getOccupant().get() instanceof Crate) {
             Crate occupiedCrate = (Crate) this.getOccupant().get();     //Need to confirm whether cast will cause exception.
-            return Character.toUpperCase(occupiedCrate.getID()) == this.destID;
+            return Character.toUpperCase(occupiedCrate.getID()) == this.getDestID();
         }
         return false; // General case
     }
@@ -37,7 +36,6 @@ public class DestTile extends Tile {
 
     @Override
     public char getRepresentation() {
-        //TODO
         if (this.getOccupant().isPresent()) {
             return this.getOccupant().get().getRepresentation();
         }

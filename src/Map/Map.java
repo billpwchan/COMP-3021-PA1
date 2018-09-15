@@ -138,7 +138,12 @@ public class Map {
             return true;
         } else if (this.isValid(currentRow, currentCol) && this.cells[currentRow][currentCol] instanceof Occupiable) {
             if (((Tile) this.cells[currentRow][currentCol]).getOccupant().get() instanceof Crate) {
-
+                if (this.moveCrate((Crate) ((Tile) this.cells[currentRow][currentCol]).getOccupant().get(), d)) {
+                    ((Tile) this.cells[oriRow][oriCol]).removeOccupant();
+                    ((Tile) this.cells[currentRow][currentCol]).setOccupant(this.player);
+                    this.player.setPos(currentRow, currentCol);
+                    return true;
+                }
             }
         }
         return false; // You may also modify this line.
@@ -175,6 +180,12 @@ public class Map {
                 break;
             }
         }
+        if (this.isValid(currentRow, currentCol) && this.isOccupiableAndNotOccupiedWithCrate(currentRow, currentCol)) {
+            ((Tile) this.cells[oriRow][oriCol]).removeOccupant();
+            ((Tile) this.cells[currentRow][currentCol]).setOccupant(c);
+            c.setPos(currentRow, currentCol);
+            return true;
+        }
         return false; // You may also modify this line.
     }
 
@@ -192,8 +203,12 @@ public class Map {
         if (!this.isValid(r, c)) {
             return false;
         }
-        return (this.cells[r][c] instanceof Occupiable) && !(((Occupiable) this.cells[r][c]).getOccupant().isPresent()
-                && ((Occupiable) this.cells[r][c]).getOccupant().get() instanceof Crate);
+        if (!(this.cells[r][c] instanceof Occupiable)) {
+            return false;
+        } else {
+            return !(((Occupiable) this.cells[r][c]).getOccupant().isPresent()
+                    && ((Occupiable) this.cells[r][c]).getOccupant().get() instanceof Crate);
+        }
     }
 
     public enum Direction {
