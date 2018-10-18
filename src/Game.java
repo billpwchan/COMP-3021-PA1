@@ -53,8 +53,7 @@ public class Game {
         } catch (InvalidMapException ex) {
             throw ex;
         } catch (FileNotFoundException ex) {
-            var exceptionCaught = ex;
-            exceptionCaught.printStackTrace();
+            ex.printStackTrace();
         }
     }
 

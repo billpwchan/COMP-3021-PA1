@@ -35,11 +35,11 @@ class GameTest {
         final PrintStream originalOut = System.out;
         System.setOut(new PrintStream(outContent));
         g.display();
-        assertTrue(true, "##########\n" +
-                "#@...a..A#\n" +
-                "#b.......#\n" +
-                "#B.......#\n" +
-                "##########".equals(outContent.toString()));
+        assertEquals("##########\r\n" +
+                "#@...a..A#\r\n" +
+                "#b.......#\r\n" +
+                "#B.......#\r\n" +
+                "##########\r\n", outContent.toString());
         System.setOut(originalOut);
     }
 
@@ -57,11 +57,11 @@ class GameTest {
         final PrintStream originalOut = System.out;
         System.setOut(new PrintStream(outContent));
         g.display();
-        assertTrue(true, "##########\n" +
-                "#....a..A#\n" +
-                "#.@......#\n" +
-                "#b.......#\n" +
-                "##########".equals(outContent.toString()));
+        assertEquals("##########\r\n" +
+                "#....a..A#\r\n" +
+                "#.@......#\r\n" +
+                "#b.......#\r\n" +
+                "##########\r\n", outContent.toString());
         assertFalse(g.isDeadlocked());
         System.setOut(originalOut);
     }
