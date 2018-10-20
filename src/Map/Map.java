@@ -33,7 +33,6 @@ public class Map {
      * @throws InvalidMapException Throw the correct exception when necessary. There should only be 1 player.
      */
     public void initialize(int rows, int cols, char[][] rep) throws InvalidMapException {
-        //TODO
         this.reInitializeVariables(rows, cols);
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; ++j) {
@@ -45,8 +44,8 @@ public class Map {
                     case '@': {
                         if (this.player == null) {
                             this.player = new Player(i, j);
-                            Cell newTile = new Tile();
-                            ((Tile) newTile).setOccupant(this.player);
+                            Tile newTile = new Tile();
+                            newTile.setOccupant(this.player);
                             this.cells[i][j] = newTile;
                             break;
                         } else {
@@ -83,8 +82,8 @@ public class Map {
 
     private void reInitializeVariables(int rows, int cols) {
         this.cells = new Cell[rows][cols];
-        this.destTiles = new ArrayList();
-        this.crates = new ArrayList();
+        this.destTiles = new ArrayList<>();
+        this.crates = new ArrayList<>();
         this.player = null;
     }
 
